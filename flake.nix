@@ -5,7 +5,7 @@
   };
   outputs = inputs:
     inputs.parts.lib.mkFlake {inherit inputs;} {
-      perSystem = {pkgs, ...}: {
+      perSystem = {pkgs, self', ...}: {
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
             src = pkgs.fetchurl {
@@ -16,7 +16,7 @@
           });
           golangci-lint = pkgs.writeShellApplication {
             name = "golangci-lint";
-            runtimeInputs = [pkgs.go pkgs.golangci-lint];
+            runtimeInputs = [self'.packages.go pkgs.golangci-lint];
             text = ''exec golangci-lint "$@"'';
           };
         };
