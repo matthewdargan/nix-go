@@ -19,10 +19,10 @@
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
             src = pkgs.fetchurl {
-              hash = "sha256-N06oKyiexzjpaCZ8rFnH1f8YD5SSJQJUeEsgROkN9ak=";
+              hash = "sha256-n06oKyiexzjpaCZ8rFnH1f8YD5SSJQJUeEsgROkN9ak=";
               url = "https://go.dev/dl/go${version}.src.tar.gz";
             };
-            version = "1.22.2";
+            version = "1.22.1";
           });
           golangci-lint = pkgs.writeShellApplication {
             name = "golangci-lint";
