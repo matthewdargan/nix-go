@@ -26,7 +26,8 @@ jobs:
             c="chore: bump Go version to ${v1}"
             git commit -m "${c}"
             git push --set-upstream origin "${b}"
-            gh pr create --title "${c}" \
+            gh pr create --assignee matthewdargan \
+              --title "${c}" \
               --body 'TODO: update `packages.go.src.hash` and run `nix flake update`' \
               --head "${b}"
           fi
