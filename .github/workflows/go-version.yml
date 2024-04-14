@@ -20,8 +20,12 @@ jobs:
             sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
             git config --global user.name "github-actions[bot]"
+            b="chore/go${v1}"
+            git switch -c "${b}"
             git add .
             c="chore: bump Go version to ${v1}"
             git commit -m "${c}"
-            gh pr create --title "${c}" --body 'TODO: update `packages.go.src.hash` and run `nix flake update`'
+            gh pr create --title "${c}" \
+              --body 'TODO: update `packages.go.src.hash` and run `nix flake update`' \
+              --head "${b}"
           fi
