@@ -9,9 +9,12 @@
         pkgs,
         self',
         ...
-      }: {
+      }: let
+        inherit (self'.packages) go;
+        inherit (self'.legacyPackages) buildGoModule;
+      in {
         legacyPackages.buildGoModule = pkgs.callPackage "${inputs.nixpkgs}/pkgs/build-support/go/module.nix" {
-          inherit (self'.packages) go;
+          inherit go;
         };
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
@@ -23,11 +26,11 @@
           });
           golangci-lint = pkgs.writeShellApplication {
             name = "golangci-lint";
-            runtimeInputs = [self'.packages.go pkgs.golangci-lint];
+            runtimeInputs = [go pkgs.golangci-lint];
             text = ''exec golangci-lint "$@"'';
           };
           gopls = pkgs.callPackage "${inputs.nixpkgs}/pkgs/development/tools/language-servers/gopls" {
-            inherit (self'.legacyPackages) buildGoModule;
+            inherit buildGoModule;
           };
         };
       };
