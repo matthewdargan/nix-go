@@ -11,7 +11,7 @@
         ...
       }: {
         legacyPackages.buildGoModule = pkgs.callPackage "${inputs.nixpkgs}/pkgs/build-support/go/module.nix" {
-          go = self'.packages.go;
+          inherit (self'.packages) go;
         };
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
@@ -25,6 +25,9 @@
             name = "golangci-lint";
             runtimeInputs = [self'.packages.go pkgs.golangci-lint];
             text = ''exec golangci-lint "$@"'';
+          };
+          gopls = pkgs.callPackage "${inputs.nixpkgs}/pkgs/development/tools/language-servers/gopls" {
+            inherit (self'.legacyPackages) buildGoModule;
           };
         };
       };
