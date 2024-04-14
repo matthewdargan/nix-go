@@ -1,4 +1,4 @@
-name: go-version
+name: 'go-version'
 on:
   schedule:
     - cron: '0 17 * * *'
@@ -7,7 +7,12 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v4
-      - name: 'get latest Go version'
+      - name: 'compare Go versions'
         run: |
-          version="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
-          echo "version: ${version}"
+          v1="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
+          v2="$(grep 'version =' flake.nix | cut -d '"' -f2)"
+          echo "v1: ${v1}"
+          echo "v2: ${v2}"
+          if [[ "${v1}" != "${v2}" ]]; then
+            echo 'Go versions are not equal.'
+          fi
