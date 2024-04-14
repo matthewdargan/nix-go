@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: 'compare Go versions'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           v1="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
           v2="$(grep 'version =' flake.nix | cut -d '"' -f2)"
