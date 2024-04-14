@@ -22,7 +22,7 @@
               hash = "sha256-N06oKyiexzjpaCZ8rFnH1f8YD5SSJQJUeEsgROkN9ak=";
               url = "https://go.dev/dl/go${version}.src.tar.gz";
             };
-            version = "1.22.3";
+            version = "1.22.2";
           });
           golangci-lint = pkgs.writeShellApplication {
             name = "golangci-lint";
