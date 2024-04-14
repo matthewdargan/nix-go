@@ -5,7 +5,14 @@
   };
   outputs = inputs:
     inputs.parts.lib.mkFlake {inherit inputs;} {
-      perSystem = {pkgs, self', ...}: {
+      perSystem = {
+        pkgs,
+        self',
+        ...
+      }: {
+        legacyPackages.buildGoModule = pkgs.callPackage "${inputs.nixpkgs}/pkgs/build-support/go/module.nix" {
+          go = self'.packages.go;
+        };
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
             src = pkgs.fetchurl {
