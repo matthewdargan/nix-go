@@ -1,0 +1,13 @@
+name: go-version
+on:
+  schedule:
+    - cron: '0 17 * * *'
+jobs:
+  go-version:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'get latest Go version'
+        run: |
+          version="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
+          echo "version: ${version}"
