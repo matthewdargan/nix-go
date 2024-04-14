@@ -18,7 +18,8 @@ jobs:
           echo "v2: ${v2}"
           if [[ "${v1}" != "${v2}" ]]; then
             sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
-            git diff
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
             git add .
             c="chore: bump Go version to ${v1}"
             git commit -m "${c}"
