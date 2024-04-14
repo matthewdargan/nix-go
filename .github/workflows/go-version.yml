@@ -2,6 +2,7 @@ name: 'go-version'
 on:
   schedule:
     - cron: '0 17 * * *'
+  workflow_dispatch:
 jobs:
   go-version:
     runs-on: 'ubuntu-latest'
