@@ -23,7 +23,7 @@ jobs:
           nix flake update
           sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
           nix_build_output="$(nix build .#go 2>&1 || true)"
-          if [[ "${nix_build_output}" =~ got:[[:space:]]+sha256-([a-zA-Z0-9=]+) ]]; then
+          if [[ "${nix_build_output}" =~ got:[[:space:]]+(sha256-[[:alnum:]=]+) ]]; then
             hash="${BASH_REMATCH[1]}"
             sed -i "s/hash = \".*\"/hash = \"${hash}\"/" flake.nix
           fi
