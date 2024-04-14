@@ -15,5 +15,8 @@ jobs:
           echo "v1: ${v1}"
           echo "v2: ${v2}"
           if [[ "${v1}" != "${v2}" ]]; then
-            echo 'Go versions are not equal.'
+            sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
+            git diff
+            git add .
+            gh pr create --title "chore: bump Go version to ${v1}"
           fi
