@@ -14,8 +14,6 @@ jobs:
         run: |
           v1="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
           v2="$(grep 'version =' flake.nix | cut -d '"' -f2)"
-          echo "v1: ${v1}"
-          echo "v2: ${v2}"
           if [[ "${v1}" != "${v2}" ]]; then
             sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
