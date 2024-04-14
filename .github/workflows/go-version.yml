@@ -20,6 +20,7 @@ jobs:
             sed -i "s/version = \"${v2}\"/version = \"${v1}\"/" flake.nix
             git diff
             git add .
-            gh pr create --title "chore: bump Go version to ${v1}" \
-              --body 'TODO: update `packages.go.src.hash` and run `nix flake update`'
+            c="chore: bump Go version to ${v1}"
+            git commit -m "${c}"
+            gh pr create --title "${c}" --body 'TODO: update `packages.go.src.hash` and run `nix flake update`'
           fi
