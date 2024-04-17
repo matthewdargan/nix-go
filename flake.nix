@@ -33,6 +33,35 @@
             };
             version = "1.22.2";
           });
+          goVersion = pkgs.writeShellApplication {
+            name = "go-version";
+            runtimeInputs = [pkgs.curl pkgs.gh pkgs.git pkgs.gnugrep pkgs.jq];
+            text = ''
+              set -eux
+              v1="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
+              v2="$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' flake.nix)"
+              if [[ "''${v1}" == "''${v2}" ]]; then
+                exit 0
+              fi
+
+              nix flake update
+              sed -i "s/version = \"''${v2}\"/version = \"''${v1}\"/" flake.nix
+              nix_build_output="$(nix build .#go 2>&1 || true)"
+              if [[ "''${nix_build_output}" =~ got:[[:space:]]+(sha256-[[:alnum:]=]+) ]]; then
+                hash="''${BASH_REMATCH[1]}"
+                sed -i "s/hash = \".*\"/hash = \"''${hash}\"/" flake.nix
+              fi
+
+              git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+              git config --global user.name 'github-actions[bot]'
+              branch="chore/go''${v1}"
+              commit="chore: bump Go version to ''${v1}"
+              git switch --create "''${branch}"
+              git commit -am "''${commit}"
+              git push --set-upstream origin "''${branch}"
+              gh pr create --assignee matthewdargan --title "''${commit}" --body ''' --head "''${branch}"
+            '';
+          };
           golangci-lint = pkgs.writeShellApplication {
             name = "golangci-lint";
             runtimeInputs = [go pkgs.golangci-lint];
