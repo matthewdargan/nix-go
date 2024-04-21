@@ -35,7 +35,15 @@
           });
           goVersion = pkgs.writeShellApplication {
             name = "go-version";
-            runtimeInputs = [pkgs.curl pkgs.gh pkgs.git pkgs.gnugrep pkgs.jq];
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.curl
+              pkgs.gh
+              pkgs.git
+              pkgs.gnugrep
+              pkgs.gnused
+              pkgs.jq
+            ];
             text = ''
               set -eux
               v1="$(curl -s 'https://go.dev/dl/?mode=json' | jq -r '.[].version' | sort -r | head -n 1 | tr -d '[:alpha:]')"
