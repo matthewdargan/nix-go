@@ -55,9 +55,9 @@
               nix flake update
               sed -i "s/version = \"''${v2}\"/version = \"''${v1}\"/" flake.nix
               nix_build_output="$(nix build .#go 2>&1 || true)"
-              if [[ "''${nix_build_output}" =~ got:[[:space:]]+(sha256-[[:alnum:]=]+) ]]; then
+              if [[ "''${nix_build_output}" =~ got:[[:space:]]+(sha256-.+=) ]]; then
                 hash="''${BASH_REMATCH[1]}"
-                sed -i "s/hash = \".*\"/hash = \"''${hash}\"/" flake.nix
+                sed -i "s#hash = \".*\"#hash = \"''${hash}\"#" flake.nix
               fi
 
               git config --global user.email 'github-actions[bot]@users.noreply.github.com'
