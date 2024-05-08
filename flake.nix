@@ -28,10 +28,10 @@
         packages = {
           go = pkgs.go.overrideAttrs (_: rec {
             src = pkgs.fetchurl {
-              hash = "sha256-N06oKyiexzjpaCZ8rFnH1f8YD5SSJQJUeEsgROkN9ak=";
+              hash = "sha256-gGSO80+QMZPXKlnA3/AZ9fmK4MmqE63gsOy/+ZGnb2g=";
               url = "https://go.dev/dl/go${version}.src.tar.gz";
             };
-            version = "1.22.2";
+            version = "1.22.3";
           });
           goVersion = pkgs.writeShellApplication {
             name = "go-version";
