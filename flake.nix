@@ -75,7 +75,7 @@
             runtimeInputs = [go pkgs.golangci-lint];
             text = ''exec golangci-lint "$@"'';
           };
-          gopls = pkgs.callPackage "${inputs.nixpkgs}/pkgs/development/tools/language-servers/gopls" {
+          gopls = pkgs.callPackage "${inputs.nixpkgs}/pkgs/by-name/go/gopls/package.nix" {
             inherit buildGoModule;
           };
         };
